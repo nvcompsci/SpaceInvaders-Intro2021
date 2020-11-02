@@ -11,7 +11,14 @@ function draw() {
   background(220);
   for (let i=0;i<10;i++) {
     updateSprite(aliens[i])
+    alienVsWalls(aliens[i])
     drawAlien(aliens[i])
+  }
+}
+
+function alienVsWalls(a) {
+  if (a.x > width || a.x < 0) {
+    a.vx *= -1
   }
 }
 
