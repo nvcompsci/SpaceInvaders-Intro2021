@@ -1,5 +1,6 @@
 //create array
 let aliens = []
+let lasers = []
 
 function setup() {
   createCanvas(400, 400);
@@ -9,16 +10,24 @@ function setup() {
 
 function draw() {
   background(220);
-  for (let i=0;i<10;i++) {
+  for (let i=0;i<aliens.length;i++) {
     updateSprite(aliens[i])
     alienVsWalls(aliens[i])
     drawAlien(aliens[i])
+  }
+  for (let i = 0; i < lasers.length; i++) {
+    updateSprite(lasers[i])
+    drawLaser(lasers[i])
   }
 }
 
 function alienVsWalls(a) {
   if (a.x > width || a.x < 0) {
     a.vx *= -1
+  }
+  else if (a.y > height) {
+    console.log("GAME OVER")
+    noLoop()
   }
 }
 
@@ -30,6 +39,12 @@ function updateSprite(s) {
 function drawAlien(a) {
   fill("green")
   circle(a.x,a.y,a.width)
+}
+
+function drawLaser(laser) {
+  fill("red")
+  noStroke()
+  rect(laser.x, laser.y, laser.width, laser.height)
 }
 
 function spawnAliens() {
@@ -47,3 +62,26 @@ function spawnAliens() {
   }
   
 }
+
+function keyReleased() {
+  if (keyCode == 32) {
+    fireLaser()
+  }
+}
+
+function fireLaser() {
+  let laser = {}
+  laser.x = width / 2
+  laser.y = height - 10
+  laser.width = 2
+  laser.height = 10
+  laser.vx = 0
+  laser.vy = -3
+  
+  lasers.push(laser)
+}
+
+
+
+
+
