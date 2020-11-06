@@ -1,5 +1,6 @@
 //create array
 let aliens = []
+let lasers = []
 
 function setup() {
   createCanvas(400, 400);
@@ -16,11 +17,20 @@ function draw() {
     updateSprite(aliens[i])
     
   }
+  for (let i=0;i<lasers.length;i++) {
+    updateSprite(lasers[i])
+    drawLaser(lasers[i])
+  }
 }
 
 function drawAlien(a) {
   fill("green")
   circle(a.x,a.y,a.width)
+}
+
+function drawLaser(l) {
+  fill("red")
+  rect(l.x, l.y, l.width, l.height)
 }
 
 function updateSprite(s) {
@@ -38,6 +48,19 @@ function alienVsWalls(a) {
   }
 }
 
+function laserVsAlien(l,a) {
+  
+}
+
+function rectVsRect(rect1, rect2) {
+  if (rect1.x < rect2.x + rect2.width &&
+    rect1.x + rect1.width > rect2.x &&
+    rect1.y < rect2.y + rect2.height &&
+    rect1.y + rect1.height > rect2.y) {
+    return true;
+  } else return false;
+}
+
 function spawnAliens() {
   for (let i=0;i<10;i++) {
     let alien = {}
@@ -51,5 +74,24 @@ function spawnAliens() {
     aliens.push(alien)
   }
 }
+
+function keyReleased() {
+  if (keyCode == 32) {
+    fireLaser()
+  }
+}
+
+function fireLaser() {
+  let laser = {}
+  laser.x = width / 2
+  laser.y = height - 10
+  laser.width = 2
+  laser.height = 10
+  laser.vx = 0
+  laser.vy = -5
+  
+  lasers.push(laser)
+}
+
 
 
