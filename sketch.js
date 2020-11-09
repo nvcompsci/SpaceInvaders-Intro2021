@@ -31,6 +31,21 @@ function drawLaser(laser) {
   rect(laser.x, laser.y, laser.width, laser.height)
 }
 
+function laserVsAlien(l, a) {
+  if (3 > 2) {
+
+  }
+}
+
+function rectVsRect(rect1, rect2) {
+  if (rect1.x < rect2.x + rect2.width &&
+    rect1.x + rect1.width > rect2.x &&
+    rect1.y < rect2.y + rect2.height &&
+    rect1.y + rect1.height > rect2.y) {
+    return true;
+  } else return false;
+}
+
 function alienVsWalls(a) {
   if (a.x > width || a.x < 0) {
     a.vx *= -1
@@ -51,7 +66,7 @@ function spawnAliens() {
     let alien = {}
     alien.x = (i+1) * 40
     alien.y = 40
-    alien.vx = 3
+    alien.vx = 2
     alien.vy = 0.5
     alien.width = 30
     alien.height = 30
