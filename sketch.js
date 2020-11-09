@@ -14,11 +14,18 @@ function draw() {
     updateSprite(aliens[i])
     alienVsWalls(aliens[i])
     drawAlien(aliens[i])
+    for (let j=0;j<lasers.length;j++) {
+      laserVsAlien(lasers[j],aliens[i])
+    }
   }
   
   for (let i=0; i<lasers.length; i++) {
+    updateSprite(lasers[i])
     drawLaser(lasers[i])
   }
+  
+  aliens = aliens.filter(a => a.active)
+  lasers = lasers.filter(l => l.active)
 }
 
 function drawAlien(alien) {
@@ -32,8 +39,9 @@ function drawLaser(laser) {
 }
 
 function laserVsAlien(l, a) {
-  if (3 > 2) {
-
+  if (rectVsRect(l,a)) {
+    l.active = false
+    a.active = false
   }
 }
 
@@ -70,6 +78,7 @@ function spawnAliens() {
     alien.vy = 0.5
     alien.width = 30
     alien.height = 30
+    alien.active = true
     //add this alien to the array
     aliens.push(alien)
   }
@@ -87,6 +96,7 @@ function fireLaser() {
   laser.height = 10
   laser.vx = 0
   laser.vy = -3
+  laser.active = true
   
   lasers.push(laser)
 }
