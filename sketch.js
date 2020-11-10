@@ -2,9 +2,12 @@
 let aliens = []
 let lasers = []
 
+let player = {}
+
 function setup() {
   createCanvas(400, 400);
   spawnAliens()
+  spawnPlayer()
   console.log(aliens)
 }
 
@@ -23,6 +26,8 @@ function draw() {
     drawLaser(lasers[i])
   }
   
+  updateSprite(player)
+  drawPlayer()
   //only keep the sprites that are still active
   aliens = aliens.filter(a => a.active)
   lasers = lasers.filter(l => l.active)
@@ -71,6 +76,11 @@ function drawLaser(laser) {
   rect(laser.x, laser.y, laser.width, laser.height)
 }
 
+function drawPlayer() {
+  fill("blue")
+  rect(player.x, player.y, player.width, player.height)
+}
+
 function spawnAliens() {
   
   for (let i=0;i<10;i++) {
@@ -88,10 +98,19 @@ function spawnAliens() {
   
 }
 
+function keyPressed() {
+  if (keyCode == 65)
+    player.vx = -3
+  else if (keyCode == 68)
+    player.vx = 3
+}
+
 function keyReleased() {
   if (keyCode == 32) {
     fireLaser()
   }
+  else
+    player.vx = 0
 }
 
 function fireLaser() {
@@ -107,7 +126,15 @@ function fireLaser() {
   lasers.push(laser)
 }
 
-
+function spawnPlayer() {
+  player.x = width / 2
+  player.y = height - 10
+  player.width = 10
+  player.height = 30
+  player.vx = 0
+  player.vy = 0
+  player.hp = 5
+}
 
 
 
