@@ -115,11 +115,11 @@ function keyReleased() {
 
 function fireLaser() {
   let laser = {}
-  laser.x = width / 2
-  laser.y = height - 10
-  laser.width = 2
+  laser.x = player.x + player.width / 2
   laser.height = 10
-  laser.vx = 0
+  laser.y = player.y - laser.height
+  laser.width = 2  
+  laser.vx = player.vx * 0.25
   laser.vy = -3
   laser.active = true
   
@@ -128,9 +128,9 @@ function fireLaser() {
 
 function spawnPlayer() {
   player.x = width / 2
-  player.y = height - 10
-  player.width = 10
-  player.height = 30
+  player.y = height - 50
+  player.width = 20
+  player.height = 50
   player.vx = 0
   player.vy = 0
   player.hp = 5
