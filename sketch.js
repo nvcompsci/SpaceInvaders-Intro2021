@@ -1,9 +1,12 @@
 let aliens = []
 let lasers = []
 
+let player = {}
+
 function setup() {
   createCanvas(400, 400);
   spawnAliens()
+  spawnPlayer()
   console.log(aliens)
   frameRate(30)
 }
@@ -24,8 +27,22 @@ function draw() {
     drawLaser(lasers[i])
   }
   
+  
+  
+  updateSprite(player)
+  drawPlayer()
+  
   aliens = aliens.filter(a => a.active)
   lasers = lasers.filter(l => l.active)
+}
+
+function keyPressed() {
+  if (keyCode == 65) {
+    player.vx = -2
+  }
+  else if (keyCode == 68) {
+    player.vx = 2
+  }
 }
 
 function drawAlien(alien) {
@@ -36,6 +53,11 @@ function drawAlien(alien) {
 function drawLaser(laser) {
   fill("red")
   rect(laser.x, laser.y, laser.width, laser.height)
+}
+
+function drawPlayer() {
+  fill("blue")
+  rect(player.x, player.y, player.width, player.height)
 }
 
 function laserVsAlien(l, a) {
@@ -86,20 +108,29 @@ function spawnAliens() {
 
 function keyReleased() {
   if (keyCode == 32) fireLaser()
+  else player.vx = 0
 }
 
 function fireLaser() {
   let laser = {}
-  laser.x = width / 2
-  laser.y = height - 10
+  laser.x = player.x + player.width / 2
+  laser.y = player.y - 15
   laser.width = 2
   laser.height = 10
-  laser.vx = 0
+  laser.vx = player.vx
   laser.vy = -3
   laser.active = true
   
   lasers.push(laser)
 }
 
-
+function spawnPlayer() {
+  player.x = width / 2
+  player.y = height - 10
+  player.width = 30
+  player.height = 50
+  player.vx = 0
+  player.vy = 0
+  player.hp = 5
+}
 
