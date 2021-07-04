@@ -1,5 +1,6 @@
 //create array
 let aliens = []
+let lasers = []
 
 function setup() {
   createCanvas(400, 400);
@@ -9,15 +10,22 @@ function setup() {
 
 function draw() {
   background(220);
-  for (let i=0;i<10;i++) {
-    updateSprite(aliens[i])
+  
+  for (let i=0;i<aliens.length;i++) {
     drawAlien(aliens[i])
+    alienVsWalls(aliens[i])
+    updateSprite(aliens[i])
+    for (let j=0;j<lasers.length;j++) {
+      laserVsAlien(lasers[j],aliens[i])
+    }
   }
-}
-
-function updateSprite(s) {
-  s.x += s.vx
-  s.y += s.vy
+  for (let i=0;i<lasers.length;i++) {
+    updateSprite(lasers[i])
+    drawLaser(lasers[i])
+  }
+  
+  aliens = aliens.filter(a => a.active)
+  lasers = lasers.filter(l => l.active)
 }
 
 function drawAlien(a) {
@@ -25,18 +33,75 @@ function drawAlien(a) {
   circle(a.x,a.y,a.width)
 }
 
+function drawLaser(l) {
+  fill("red")
+  rect(l.x, l.y, l.width, l.height)
+}
+
+function updateSprite(s) {
+  s.x += s.vx
+  s.y += s.vy
+}
+
+function alienVsWalls(a) {
+  if (a.x > width || a.x < 0 ) {
+    a.vx *= -1
+  }
+  else if (a.y > height) {
+    console.log("You lose!")
+    noLoop()
+  }
+}
+
+function laserVsAlien(l,a) {
+  if (rectVsRect(l,a)) {
+    l.active = false
+    a.active = false
+  }
+}
+
+function rectVsRect(rect1, rect2) {
+  if (rect1.x < rect2.x + rect2.width &&
+    rect1.x + rect1.width > rect2.x &&
+    rect1.y < rect2.y + rect2.height &&
+    rect1.y + rect1.height > rect2.y) {
+    return true;
+  } else return false;
+}
+
 function spawnAliens() {
-  
   for (let i=0;i<10;i++) {
     let alien = {}
-    alien.x = i * 32
-    alien.y = 10
-    alien.vx = 1
-    alien.vy = 0.5
+    alien.x = i * 33 + 18
+    alien.y = 18
     alien.width = 30
     alien.height = 30
-    //add this alien to array
+    alien.vx = 3
+    alien.vy = 0.2
+    alien.active = true
+    //add new alien to array
     aliens.push(alien)
   }
-  
 }
+
+function keyReleased() {
+  if (keyCode == 32) {
+    fireLaser()
+  }
+}
+
+function fireLaser() {
+  let laser = {}
+  laser.x = width / 2
+  laser.y = height - 10
+  laser.width = 2
+  laser.height = 10
+  laser.vx = 0
+  laser.vy = -5
+  laser.active = true
+  
+  lasers.push(laser)
+}
+
+
+
